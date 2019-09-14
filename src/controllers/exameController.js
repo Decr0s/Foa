@@ -5,8 +5,11 @@ module.exports = {
 
     async index(req, res){
 
-        return res.send('Index')
+            const exames = await Exame.find();
+
+        return res.json(exames)
     },
+    
     async store(req, res){
         const {descricao} = req.body
 
@@ -16,13 +19,36 @@ module.exports = {
 
         return res.json(exames);
 
+    },
+    async show(req, res){
+        const {id} = req.params
+
+        const exame = await Exame.findById(id)
+
+        return res.json(exame)
 
     },
     async update(req, res){
 
-       return res.json({
-        message: "Altera um exame" 
-       })
+        const {id} = req.params
+
+        const dados = {
+            descricao: req.body.descricao
+        }
+
+        const exame = await Exame.findByIdAndUpdate(id, dados,{new: true})
+
+        return res.json(exame)
+    },
+
+    async delete(req, res){
+
+        const {id} = req.params
+
+        const exame = await Exame.findByIdAndRemove(id)
+
+        return res.json(exame)
+
     }
 
 }
